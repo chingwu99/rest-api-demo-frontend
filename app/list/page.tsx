@@ -1,5 +1,4 @@
 import DataTable from "./components/DataTable";
-import axios from "axios";
 
 const List = () => {
   return (

@@ -55,7 +55,7 @@ export default function DataTable() {
   const columns: ColumnDef<Payment>[] = [
     {
       accessorKey: "username",
-      header: "Username",
+      header: "已簽到人員",
       cell: ({ row }) => (
         <div className="capitalize">{row.getValue("username")}</div>
       ),
@@ -68,7 +68,7 @@ export default function DataTable() {
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            Email
+            電子信箱
           </Button>
         );
       },
@@ -99,7 +99,7 @@ export default function DataTable() {
         if (token === id)
           return (
             <div className="flex">
-              <div
+              <Button
                 onClick={async () => {
                   await axios.delete(`http://localhost:8080/users/${id}`, {
                     withCredentials: true,
@@ -107,16 +107,17 @@ export default function DataTable() {
 
                   router.push("/");
                 }}
-                className="mx-1"
+                className="mx-1 "
+                variant="destructive"
               >
                 刪除
-              </div>
-              <div
+              </Button>
+              <Button
                 onClick={async () => {
                   await axios.patch(
                     `http://localhost:8080/users/${id}`,
                     {
-                      username: "pp",
+                      username: "zz",
                     },
                     {
                       withCredentials: true,
@@ -128,7 +129,7 @@ export default function DataTable() {
                 className="mx-1"
               >
                 編輯姓名
-              </div>
+              </Button>
             </div>
           );
       },
