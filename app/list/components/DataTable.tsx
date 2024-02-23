@@ -29,6 +29,7 @@ import axios from "axios";
 import useSWR from "swr";
 
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export type Payment = {
   id: string;
@@ -39,6 +40,25 @@ export type Payment = {
 const fetcher = (url: string) => axios.get(url, { withCredentials: true });
 
 export default function DataTable() {
+  const router = useRouter();
+
+  useEffect(() => {
+    //取出Token
+    const token = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("HENRY-AUTH="))
+      ?.split("=")[1];
+
+    const tokenId = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("HENRY-AUTH-ID="))
+      ?.split("=")[1];
+
+    if (!token || !tokenId) {
+      return router.push("/");
+    }
+  }, []);
+
   const {
     data: resData,
     error,
@@ -168,7 +188,7 @@ export default function DataTable() {
     <div className="w-full">
       <div className="flex items-center py-4">
         <Input
-          placeholder="Filter emails..."
+          placeholder="透過電子信箱搜尋..."
           value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("email")?.setFilterValue(event.target.value)

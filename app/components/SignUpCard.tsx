@@ -16,6 +16,7 @@ import { useForm } from "react-hook-form";
 import { LuAlertCircle } from "react-icons/lu";
 import { buttonVariants } from "@/components/ui/button";
 import { loginHandler } from "@/lib/loginHandler";
+import { useToast } from "@/components/ui/use-toast";
 
 type FormData = {
   email: string;
@@ -29,6 +30,7 @@ type SignUpCardProps = {
 
 const SignUpCard: React.FC<SignUpCardProps> = ({ setIsLogInCard }) => {
   const router = useRouter();
+  const { toast } = useToast();
 
   const {
     register,
@@ -50,18 +52,36 @@ const SignUpCard: React.FC<SignUpCardProps> = ({ setIsLogInCard }) => {
       const siginRes = await siginHandler(data);
 
       if (siginRes === "error") {
+        toast({
+          title: "簽到失敗！",
+          description: "您填寫的電子信箱已經被使用！",
+        });
+
         return;
       }
 
       const loginRes = await loginHandler({ email: email, password: password });
 
       if (loginRes === "error") {
+        toast({
+          title: "簽到失敗！",
+          description: "您填寫的電子信箱已經被使用！",
+        });
         return;
       }
+
+      toast({
+        title: "簽到成功！",
+        description: "現在您可以查看已簽到成員，並修改個人資料。",
+      });
 
       router.push("/list");
     } catch (error) {
       console.log("註冊並簽到error", error);
+      toast({
+        title: "簽到失敗！",
+        description: "您填寫的電子信箱已經被使用！",
+      });
     }
   });
 

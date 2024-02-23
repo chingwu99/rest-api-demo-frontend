@@ -16,6 +16,8 @@ import { LuAlertCircle } from "react-icons/lu";
 import { buttonVariants } from "@/components/ui/button";
 import { LoginFormData } from "@/types";
 import { loginHandler } from "@/lib/loginHandler";
+import { useToast } from "@/components/ui/use-toast";
+import { useLoginStateContext } from "@/hooks/useLoginStateContext";
 
 type LogInCardProps = {
   setIsLogInCard: (value: boolean) => void;
@@ -23,6 +25,8 @@ type LogInCardProps = {
 
 const LogInCard: React.FC<LogInCardProps> = ({ setIsLogInCard }) => {
   const router = useRouter();
+  const { toast } = useToast();
+  const { setLoginState } = useLoginStateContext();
 
   const {
     register,
@@ -36,10 +40,30 @@ const LogInCard: React.FC<LogInCardProps> = ({ setIsLogInCard }) => {
 
       if (res === "error") {
         console.log("yyyyyyyy");
+        toast({
+          title: "登入失敗！",
+          description: "信箱與密碼錯誤，或帳號尚未註冊並簽到！",
+        });
       } else {
+        toast({
+          title: "登入失敗！",
+          description: "信箱與密碼錯誤，或帳號尚未註冊並簽到！",
+        });
+
+        toast({
+          title: "登入成功！",
+          description: "現在您可以查看已簽到成員，並修改個人資料。",
+        });
+
+        setLoginState(true);
+
         router.push("/list");
       }
     } catch (error) {
+      toast({
+        title: "登入失敗！",
+        description: "信箱與密碼錯誤，或帳號尚未註冊並簽到！",
+      });
       console.log("login error", error);
     }
   });
