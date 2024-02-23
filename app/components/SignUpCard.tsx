@@ -37,18 +37,32 @@ const SignUpCard: React.FC<SignUpCardProps> = ({ setIsLogInCard }) => {
   } = useForm<FormData>();
 
   const siginHandler = async (data: FormData) => {
-    const res = await axios.post("http://localhost:8080/auth/register", data);
-
-    console.log("isLogin", res);
+    try {
+      await axios.post("http://localhost:8080/auth/register", data);
+    } catch (error) {
+      return "error";
+    }
   };
 
   const onSubmit = handleSubmit(async (data) => {
     const { email, password } = data;
-    await siginHandler(data);
+    try {
+      const siginRes = await siginHandler(data);
 
-    await loginHandler({ email: email, password: password });
+      if (siginRes === "error") {
+        return;
+      }
 
-    router.push("/list");
+      const loginRes = await loginHandler({ email: email, password: password });
+
+      if (loginRes === "error") {
+        return;
+      }
+
+      router.push("/list");
+    } catch (error) {
+      console.log("註冊並簽到error", error);
+    }
   });
 
   return (
@@ -71,7 +85,7 @@ const SignUpCard: React.FC<SignUpCardProps> = ({ setIsLogInCard }) => {
                 })}
               />
               {errors.username && errors.username.type === "required" && (
-                <span className="  flex items-center">
+                <span className="  flex items-center text-sm text-red-500">
                   <LuAlertCircle className="me-1" />
                   請輸入姓名
                 </span>
@@ -89,13 +103,13 @@ const SignUpCard: React.FC<SignUpCardProps> = ({ setIsLogInCard }) => {
                 })}
               />
               {errors.email && errors.email.type === "required" && (
-                <span className="  flex items-center">
+                <span className="  flex items-center text-sm text-red-500">
                   <LuAlertCircle className="me-1" />
                   請輸入電子信箱
                 </span>
               )}
               {errors.email && errors.email.type === "pattern" && (
-                <span className="  flex items-center">
+                <span className="  flex items-center text-sm text-red-500">
                   <LuAlertCircle className="me-1" />
                   請輸入有效的電子信箱
                 </span>
@@ -110,13 +124,13 @@ const SignUpCard: React.FC<SignUpCardProps> = ({ setIsLogInCard }) => {
                 {...register("password", { required: true })}
               />
               {errors.password && errors.password.type === "required" && (
-                <span className="  flex items-center">
+                <span className="  flex items-center text-sm text-red-500">
                   <LuAlertCircle className="me-1" />
                   請設定密碼
                 </span>
               )}
               {errors.password && errors.password.type === "minLength" && (
-                <span className="  flex items-center">
+                <span className="  flex items-center text-sm text-red-500">
                   <LuAlertCircle className="me-1" />
                   密碼長度需至少6碼
                 </span>
@@ -139,7 +153,9 @@ const SignUpCard: React.FC<SignUpCardProps> = ({ setIsLogInCard }) => {
             <input
               type="submit"
               id="submit"
-              className={buttonVariants({ variant: "default" })}
+              className={` cursor-pointer ${buttonVariants({
+                variant: "default",
+              })}`}
               value="點此簽到"
             />
           </label>

@@ -31,8 +31,17 @@ const LogInCard: React.FC<LogInCardProps> = ({ setIsLogInCard }) => {
   } = useForm<LoginFormData>();
 
   const onSubmit = handleSubmit(async (data) => {
-    await loginHandler(data);
-    router.push("/list");
+    try {
+      const res = await loginHandler(data);
+
+      if (res === "error") {
+        console.log("yyyyyyyy");
+      } else {
+        router.push("/list");
+      }
+    } catch (error) {
+      console.log("login error", error);
+    }
   });
 
   return (
@@ -56,13 +65,13 @@ const LogInCard: React.FC<LogInCardProps> = ({ setIsLogInCard }) => {
                 })}
               />
               {errors.email && errors.email.type === "required" && (
-                <span className="  flex items-center">
+                <span className="  flex items-center text-sm text-red-500">
                   <LuAlertCircle className="me-1" />
                   請輸入電子信箱
                 </span>
               )}
               {errors.email && errors.email.type === "pattern" && (
-                <span className="  flex items-center">
+                <span className="  flex items-center text-sm text-red-500">
                   <LuAlertCircle className="me-1" />
                   請輸入有效的電子信箱
                 </span>
@@ -77,13 +86,13 @@ const LogInCard: React.FC<LogInCardProps> = ({ setIsLogInCard }) => {
                 {...register("password", { required: true })}
               />
               {errors.password && errors.password.type === "required" && (
-                <span className="  flex items-center">
+                <span className="  flex items-center text-sm text-red-500">
                   <LuAlertCircle className="me-1" />
                   請輸入密碼
                 </span>
               )}
               {errors.password && errors.password.type === "minLength" && (
-                <span className="  flex items-center">
+                <span className="  flex items-center text-sm text-red-500">
                   <LuAlertCircle className="me-1" />
                   密碼長度需至少6碼
                 </span>
@@ -105,7 +114,9 @@ const LogInCard: React.FC<LogInCardProps> = ({ setIsLogInCard }) => {
             <input
               type="submit"
               id="submit"
-              className={buttonVariants({ variant: "default" })}
+              className={` cursor-pointer ${buttonVariants({
+                variant: "default",
+              })}`}
               value="登入帳號"
             />
           </label>
