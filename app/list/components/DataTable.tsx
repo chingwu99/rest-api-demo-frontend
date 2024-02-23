@@ -30,6 +30,7 @@ import useSWR from "swr";
 
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { useLoginStateContext } from "@/hooks/useLoginStateContext";
 
 export type Payment = {
   id: string;
@@ -58,6 +59,8 @@ export default function DataTable() {
       return router.push("/");
     }
   }, []);
+
+  const { loginState } = useLoginStateContext();
 
   const {
     data: resData,
@@ -182,10 +185,14 @@ export default function DataTable() {
     },
   });
 
-  if (error) return <div>failed to load</div>;
+  if (error) return <div></div>;
   if (!resData) return <div>loading...</div>;
+
   return (
     <div className="w-full">
+      <div className="flex items-center justify-center w-full">
+        <h1 className=" text-2xl mb-5">已簽到成員</h1>
+      </div>
       <div className="flex items-center py-4">
         <Input
           placeholder="透過電子信箱搜尋..."
