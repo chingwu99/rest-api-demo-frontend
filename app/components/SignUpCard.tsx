@@ -42,7 +42,7 @@ const SignUpCard: React.FC<SignUpCardProps> = ({ setIsLogInCard }) => {
 
   const siginHandler = async (data: FormData) => {
     try {
-      await axios.post("http://localhost:8080/auth/register", data);
+      await axios.post("https://rest-api-demo.zeabur.app/auth/register", data);
     } catch (error) {
       return "error";
     }

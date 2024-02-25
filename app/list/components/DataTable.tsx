@@ -73,7 +73,7 @@ export default function DataTable() {
     data: resData,
     error,
     mutate,
-  } = useSWR("http://localhost:8080/users", fetcher);
+  } = useSWR("https://rest-api-demo.zeabur.app/users", fetcher);
 
   const data = resData?.data;
 
@@ -123,7 +123,7 @@ export default function DataTable() {
         const handleDelete = async () => {
           try {
             const res = await axios.delete(
-              `http://localhost:8080/users/${id}`,
+              `https://rest-api-demo.zeabur.app/users/${id}`,
               {
                 withCredentials: true,
               }
@@ -180,7 +180,7 @@ export default function DataTable() {
                           const patchUsernameHandler = async () => {
                             try {
                               const res = await axios.patch(
-                                `http://localhost:8080/users/${id}`,
+                                `https://rest-api-demo.zeabur.app/users/${id}`,
                                 {
                                   username: inputValue,
                                 },

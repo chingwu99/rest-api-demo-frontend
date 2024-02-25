@@ -3,7 +3,10 @@ import { LoginFormData } from "@/types";
 
 export const loginHandler = async (data: LoginFormData) => {
   try {
-    const res = await axios.post("http://localhost:8080/auth/login", data);
+    const res = await axios.post(
+      "https://rest-api-demo.zeabur.app/auth/login",
+      data
+    );
 
     const { sessionToken } = res.data.authentication;
     const id = res.data._id;
