@@ -17,8 +17,8 @@ export const loginHandler = async (data: LoginFormData) => {
     const expirationDate = new Date();
     expirationDate.setTime(expirationDate.getTime() + 1 * 60 * 60 * 1000); // 1小時
 
-    document.cookie = `HENRY-AUTH=${sessionToken}; expires=${expirationDate.toUTCString()};path=/`;
-    document.cookie = `HENRY-AUTH-ID=${id}; expires=${expirationDate.toUTCString()};path=/`;
+    document.cookie = `HENRY-AUTH=${sessionToken}; expires=${expirationDate.toUTCString()};path=/; SameSite=None; Secure`;
+    document.cookie = `HENRY-AUTH-ID=${id}; expires=${expirationDate.toUTCString()};path=/; SameSite=None; Secure`;
 
     return "success";
   } catch (error) {
