@@ -38,6 +38,8 @@ const LogInCard: React.FC<LogInCardProps> = ({ setIsLogInCard }) => {
     try {
       const res = await loginHandler(data);
 
+      console.log("res", res);
+
       if (res === "error") {
         console.log("yyyyyyyy");
         toast({
@@ -46,12 +48,6 @@ const LogInCard: React.FC<LogInCardProps> = ({ setIsLogInCard }) => {
           description: "信箱與密碼錯誤，或帳號尚未註冊並簽到！",
         });
       } else {
-        toast({
-          icon: "error",
-          title: "登入失敗！",
-          description: "信箱與密碼錯誤，或帳號尚未註冊並簽到！",
-        });
-
         toast({
           icon: "success",
           title: "登入成功！",
