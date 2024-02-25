@@ -67,7 +67,7 @@ export default function DataTable() {
     if (!token || !tokenId) {
       return router.push("/");
     }
-  }, []);
+  }, [router]);
 
   const {
     data: resData,
@@ -110,8 +110,6 @@ export default function DataTable() {
         return <div>帳號設定</div>;
       },
       cell: ({ row }) => {
-        const router = useRouter();
-
         //取出Token
         const token = document.cookie
           .split("; ")
