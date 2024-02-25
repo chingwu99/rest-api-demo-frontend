@@ -55,6 +55,7 @@ const SignUpCard: React.FC<SignUpCardProps> = ({ setIsLogInCard }) => {
 
       if (siginRes === "error") {
         toast({
+          icon: "error",
           title: "簽到失敗！",
           description: "您填寫的電子信箱已經被使用！",
         });
@@ -66,6 +67,7 @@ const SignUpCard: React.FC<SignUpCardProps> = ({ setIsLogInCard }) => {
 
       if (loginRes === "error") {
         toast({
+          icon: "error",
           title: "簽到失敗！",
           description: "您填寫的電子信箱已經被使用！",
         });
@@ -73,6 +75,7 @@ const SignUpCard: React.FC<SignUpCardProps> = ({ setIsLogInCard }) => {
       }
 
       toast({
+        icon: "success",
         title: "簽到成功！",
         description: "現在您可以查看已簽到成員，並修改個人資料。",
       });
@@ -83,6 +86,7 @@ const SignUpCard: React.FC<SignUpCardProps> = ({ setIsLogInCard }) => {
     } catch (error) {
       console.log("註冊並簽到error", error);
       toast({
+        icon: "error",
         title: "簽到失敗！",
         description: "您填寫的電子信箱已經被使用！",
       });

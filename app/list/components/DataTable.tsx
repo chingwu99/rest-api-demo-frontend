@@ -32,8 +32,10 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useLoginStateContext } from "@/hooks/useLoginStateContext";
 import DeleteAlertDialog from "./DeleteAlertDialog";
-
+import { BsFillClipboardCheckFill } from "react-icons/bs";
 import { useToast } from "@/components/ui/use-toast";
+import { MdAccountCircle } from "react-icons/md";
+import { IoIosSearch } from "react-icons/io";
 
 export type Payment = {
   id: string;
@@ -136,6 +138,7 @@ export default function DataTable() {
               setLoginState(false);
 
               toast({
+                icon: "success",
                 title: "您的帳號已刪除！",
               });
             }
@@ -148,69 +151,80 @@ export default function DataTable() {
 
         if (token === id)
           return (
-            <div className="flex">
-              {editState ? (
-                <>
-                  <Input
-                    placeholder="請輸入新姓名..."
-                    className="mx-2"
-                    ref={inputRef}
-                  />
-                  <Button onClick={() => setEditState(false)} className="mx-1">
-                    取消
-                  </Button>
-                  <Button
-                    variant="green"
-                    onClick={() => {
-                      const inputValue = inputRef.current?.value;
-                      console.log("輸入框的值為:", inputValue);
+            <div className="flex flex-col ">
+              <p className="text-green-600 flex items-center pb-2">
+                <MdAccountCircle className="mx-2" size={20} />
+                我的帳號
+              </p>
+              <div className="flex  items-center">
+                {editState ? (
+                  <>
+                    <Input
+                      placeholder="請輸入新姓名..."
+                      className="mx-2"
+                      ref={inputRef}
+                    />
+                    <Button
+                      onClick={() => setEditState(false)}
+                      className="mx-1"
+                    >
+                      取消
+                    </Button>
+                    <Button
+                      variant="green"
+                      onClick={() => {
+                        const inputValue = inputRef.current?.value;
+                        console.log("輸入框的值為:", inputValue);
 
-                      if (inputValue) {
-                        const patchUsernameHandler = async () => {
-                          try {
-                            const res = await axios.patch(
-                              `http://localhost:8080/users/${id}`,
-                              {
-                                username: inputValue,
-                              },
-                              {
-                                withCredentials: true,
+                        if (inputValue) {
+                          const patchUsernameHandler = async () => {
+                            try {
+                              const res = await axios.patch(
+                                `http://localhost:8080/users/${id}`,
+                                {
+                                  username: inputValue,
+                                },
+                                {
+                                  withCredentials: true,
+                                }
+                              );
+
+                              if (res) {
+                                mutate();
+                                setEditState(false);
+
+                                toast({
+                                  icon: "success",
+                                  title: "您的姓名已更新！",
+                                });
                               }
-                            );
-
-                            if (res) {
-                              mutate();
-                              setEditState(false);
-
-                              toast({
-                                title: "您的姓名已更新！",
-                              });
+                            } catch (error) {
+                              console.log("error", error);
                             }
-                          } catch (error) {
-                            console.log("error", error);
-                          }
-                        };
+                          };
 
-                        patchUsernameHandler();
-                      } else {
-                        toast({
-                          title: "請輸入姓名！",
-                        });
-                      }
-                    }}
-                    className="mx-1"
-                  >
-                    儲存
-                  </Button>
-                </>
-              ) : (
-                <>
-                  <DeleteAlertDialog handleDelete={() => handleDelete()} />
-                  <Button onClick={() => setEditState(true)} className="mx-1">
-                    編輯姓名
-                  </Button>
-                </>
-              )}
+                          patchUsernameHandler();
+                        } else {
+                          toast({
+                            icon: "error",
+                            title: "請輸入姓名！",
+                          });
+                        }
+                      }}
+                      className="mx-1"
+                    >
+                      儲存
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <DeleteAlertDialog handleDelete={() => handleDelete()} />
+                    <Button onClick={() => setEditState(true)} className="mx-1">
+                      編輯姓名
+                    </Button>
+                  </>
+                )}
+              </div>
             </div>
           );
       },
@@ -248,8 +262,9 @@ export default function DataTable() {
 
   return (
     <div className="w-full">
-      <div className="flex items-center justify-center w-full">
-        <h1 className=" text-2xl mb-5">已簽到成員</h1>
+      <div className="flex items-center justify-center w-full mb-5">
+        <BsFillClipboardCheckFill size={26} className="mx-2" />
+        <h1 className=" text-2xl ">已簽到成員</h1>
       </div>
       <div className="flex items-center py-4">
         <Input
@@ -260,6 +275,7 @@ export default function DataTable() {
           }
           className="max-w-sm"
         />
+        <IoIosSearch className="mx-2" size={24} />
       </div>
       <div className="rounded-md border">
         <Table>
