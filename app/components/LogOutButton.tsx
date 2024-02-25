@@ -11,12 +11,11 @@ const LogOutButton = () => {
   const { loginState, setLoginState } = useLoginStateContext();
 
   const handleLogOut = () => {
+    router.push("/");
+    setLoginState(false);
+
     document.cookie = "HENRY-AUTH=;";
     document.cookie = "HENRY-AUTH-ID=;";
-
-    router.push("/");
-
-    setLoginState(false);
 
     toast({
       title: "您已經成功登出！",

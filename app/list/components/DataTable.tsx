@@ -31,6 +31,9 @@ import useSWR from "swr";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useLoginStateContext } from "@/hooks/useLoginStateContext";
+import DeleteAlertDialog from "./DeleteAlertDialog";
+
+import { useToast } from "@/components/ui/use-toast";
 
 export type Payment = {
   id: string;
@@ -42,6 +45,10 @@ const fetcher = (url: string) => axios.get(url, { withCredentials: true });
 
 export default function DataTable() {
   const router = useRouter();
+  const { toast } = useToast();
+  const { setLoginState } = useLoginStateContext();
+  const [editState, setEditState] = React.useState(false);
+  const inputRef = React.useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     //取出Token
@@ -60,17 +67,11 @@ export default function DataTable() {
     }
   }, []);
 
-  const { loginState } = useLoginStateContext();
-
   const {
     data: resData,
     error,
     mutate,
   } = useSWR("http://localhost:8080/users", fetcher);
-
-  const handleMutate = () => {
-    mutate();
-  };
 
   const data = resData?.data;
 
@@ -115,44 +116,101 @@ export default function DataTable() {
           .find((row) => row.startsWith("HENRY-AUTH-ID="))
           ?.split("=")[1];
 
-        const id = row.getValue("_id");
+        const id = row.getValue("_id") as string;
 
-        console.log("row", row);
+        const handleDelete = async () => {
+          try {
+            const res = await axios.delete(
+              `http://localhost:8080/users/${id}`,
+              {
+                withCredentials: true,
+              }
+            );
+
+            if (res) {
+              document.cookie = "HENRY-AUTH=;";
+              document.cookie = "HENRY-AUTH-ID=;";
+
+              router.push("/");
+
+              setLoginState(false);
+
+              toast({
+                title: "您的帳號已刪除！",
+              });
+            }
+
+            console.log("res", res);
+          } catch (error) {
+            console.log("error", error);
+          }
+        };
 
         if (token === id)
           return (
             <div className="flex">
-              <Button
-                onClick={async () => {
-                  await axios.delete(`http://localhost:8080/users/${id}`, {
-                    withCredentials: true,
-                  });
+              {editState ? (
+                <>
+                  <Input
+                    placeholder="請輸入新姓名..."
+                    className="mx-2"
+                    ref={inputRef}
+                  />
+                  <Button onClick={() => setEditState(false)} className="mx-1">
+                    取消
+                  </Button>
+                  <Button
+                    variant="green"
+                    onClick={() => {
+                      const inputValue = inputRef.current?.value;
+                      console.log("輸入框的值為:", inputValue);
 
-                  router.push("/");
-                }}
-                className="mx-1 "
-                variant="destructive"
-              >
-                刪除
-              </Button>
-              <Button
-                onClick={async () => {
-                  await axios.patch(
-                    `http://localhost:8080/users/${id}`,
-                    {
-                      username: "zz",
-                    },
-                    {
-                      withCredentials: true,
-                    }
-                  );
+                      if (inputValue) {
+                        const patchUsernameHandler = async () => {
+                          try {
+                            const res = await axios.patch(
+                              `http://localhost:8080/users/${id}`,
+                              {
+                                username: inputValue,
+                              },
+                              {
+                                withCredentials: true,
+                              }
+                            );
 
-                  handleMutate();
-                }}
-                className="mx-1"
-              >
-                編輯姓名
-              </Button>
+                            if (res) {
+                              mutate();
+                              setEditState(false);
+
+                              toast({
+                                title: "您的姓名已更新！",
+                              });
+                            }
+                          } catch (error) {
+                            console.log("error", error);
+                          }
+                        };
+
+                        patchUsernameHandler();
+                      } else {
+                        toast({
+                          title: "請輸入姓名！",
+                        });
+                      }
+                    }}
+                    className="mx-1"
+                  >
+                    儲存
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <DeleteAlertDialog handleDelete={() => handleDelete()} />
+                  <Button onClick={() => setEditState(true)} className="mx-1">
+                    編輯姓名
+                  </Button>
+                </>
+              )}
             </div>
           );
       },

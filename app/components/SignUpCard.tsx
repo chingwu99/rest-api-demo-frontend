@@ -17,6 +17,7 @@ import { LuAlertCircle } from "react-icons/lu";
 import { buttonVariants } from "@/components/ui/button";
 import { loginHandler } from "@/lib/loginHandler";
 import { useToast } from "@/components/ui/use-toast";
+import { useLoginStateContext } from "@/hooks/useLoginStateContext";
 
 type FormData = {
   email: string;
@@ -31,6 +32,7 @@ type SignUpCardProps = {
 const SignUpCard: React.FC<SignUpCardProps> = ({ setIsLogInCard }) => {
   const router = useRouter();
   const { toast } = useToast();
+  const { setLoginState } = useLoginStateContext();
 
   const {
     register,
@@ -74,6 +76,8 @@ const SignUpCard: React.FC<SignUpCardProps> = ({ setIsLogInCard }) => {
         title: "簽到成功！",
         description: "現在您可以查看已簽到成員，並修改個人資料。",
       });
+
+      setLoginState(true);
 
       router.push("/list");
     } catch (error) {
