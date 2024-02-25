@@ -19,6 +19,8 @@ export const loginHandler = async (data: LoginFormData) => {
 
     document.cookie = `HENRY-AUTH=${sessionToken}; expires=${expirationDate.toUTCString()};path=/`;
     document.cookie = `HENRY-AUTH-ID=${id}; expires=${expirationDate.toUTCString()};path=/`;
+
+    return "success";
   } catch (error) {
     return "error";
   }

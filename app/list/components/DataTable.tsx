@@ -77,6 +77,7 @@ export default function DataTable() {
 
   const data = resData?.data;
 
+  console.log("error", error);
   console.log("data", data);
   const columns: ColumnDef<Payment>[] = [
     {
