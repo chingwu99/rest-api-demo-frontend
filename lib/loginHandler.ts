@@ -11,14 +11,16 @@ export const loginHandler = async (data: LoginFormData) => {
     const { sessionToken } = res.data.authentication;
     const id = res.data._id;
 
+    axios.defaults.headers.common["Authorization"] = sessionToken;
+
     console.log("id", id);
 
     // 設定 cookie 的過期時間，這裡我們設定為一小時後過期
     const expirationDate = new Date();
     expirationDate.setTime(expirationDate.getTime() + 1 * 60 * 60 * 1000); // 1小時
 
-    document.cookie = `HENRY-AUTH=${sessionToken}; expires=${expirationDate.toUTCString()};path=/; SameSite=None; Secure`;
-    document.cookie = `HENRY-AUTH-ID=${id}; expires=${expirationDate.toUTCString()};path=/; SameSite=None; Secure`;
+    document.cookie = `HENRY-AUTH=${sessionToken}; expires=${expirationDate.toUTCString()};path=/`;
+    document.cookie = `HENRY-AUTH-ID=${id}; expires=${expirationDate.toUTCString()};path=/`;
 
     return "success";
   } catch (error) {
