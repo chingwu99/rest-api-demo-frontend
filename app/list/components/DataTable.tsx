@@ -67,7 +67,7 @@ export default function DataTable() {
     if (!token || !tokenId) {
       return router.push("/");
     }
-  }, [router]);
+  }, []);
 
   const {
     data: resData,
