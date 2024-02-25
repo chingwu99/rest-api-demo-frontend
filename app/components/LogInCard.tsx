@@ -55,7 +55,7 @@ const LogInCard: React.FC<LogInCardProps> = ({ setIsLogInCard }) => {
 
         setLoginState(true);
 
-        // router.push("/list");
+        router.push("/list");
       }
     } catch (error) {
       toast({
