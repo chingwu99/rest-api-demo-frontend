@@ -68,6 +68,8 @@ export default function DataTable() {
       return router.push("/");
     } else if (token) {
       axios.defaults.headers.common["Authorization"] = token;
+
+      mutate();
     }
   }, []);
 
@@ -79,8 +81,6 @@ export default function DataTable() {
 
   const data = resData?.data;
 
-  console.log("error", error);
-  console.log("data", data);
   const columns: ColumnDef<Payment>[] = [
     {
       accessorKey: "username",
@@ -143,10 +143,12 @@ export default function DataTable() {
                 title: "您的帳號已刪除！",
               });
             }
-
-            console.log("res", res);
           } catch (error) {
-            console.log("error", error);
+            toast({
+              icon: "error",
+              title: "帳號刪除失敗！",
+              description: "請稍後再試，或聯繫系統管理員。",
+            });
           }
         };
 
@@ -175,7 +177,6 @@ export default function DataTable() {
                       variant="green"
                       onClick={() => {
                         const inputValue = inputRef.current?.value;
-                        console.log("輸入框的值為:", inputValue);
 
                         if (inputValue) {
                           const patchUsernameHandler = async () => {
@@ -200,7 +201,11 @@ export default function DataTable() {
                                 });
                               }
                             } catch (error) {
-                              console.log("error", error);
+                              toast({
+                                icon: "error",
+                                title: "姓名更新失敗！",
+                                description: "請稍後再試，或聯繫系統管理員。",
+                              });
                             }
                           };
 

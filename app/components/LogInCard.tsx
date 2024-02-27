@@ -38,8 +38,6 @@ const LogInCard: React.FC<LogInCardProps> = ({ setIsLogInCard }) => {
     try {
       const res = await loginHandler(data);
 
-      console.log("res", res);
-
       if (res === "error") {
         toast({
           icon: "error",
@@ -63,7 +61,6 @@ const LogInCard: React.FC<LogInCardProps> = ({ setIsLogInCard }) => {
         title: "登入失敗！",
         description: "信箱與密碼錯誤，或帳號尚未註冊並簽到！",
       });
-      console.log("login error", error);
     }
   });
 

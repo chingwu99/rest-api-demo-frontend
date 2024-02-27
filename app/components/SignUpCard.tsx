@@ -84,7 +84,6 @@ const SignUpCard: React.FC<SignUpCardProps> = ({ setIsLogInCard }) => {
 
       router.push("/list");
     } catch (error) {
-      console.log("註冊並簽到error", error);
       toast({
         icon: "error",
         title: "簽到失敗！",

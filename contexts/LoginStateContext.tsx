@@ -16,8 +16,6 @@ export const LoginStateProvider = (props: { children: React.ReactNode }) => {
 
   const router = useRouter();
 
-  console.log("loginState", loginState);
-
   useEffect(() => {
     //取出Token
     const token = document.cookie
