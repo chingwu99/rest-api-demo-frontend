@@ -66,6 +66,8 @@ export default function DataTable() {
 
     if (!token || !tokenId) {
       return router.push("/");
+    } else if (token) {
+      axios.defaults.headers.common["Authorization"] = token;
     }
   }, []);
 
