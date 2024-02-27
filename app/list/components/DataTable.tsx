@@ -57,6 +57,27 @@ export default function DataTable() {
     mutate,
   } = useSWR("https://rest-api-demo.zeabur.app/users", fetcher);
 
+  React.useEffect(() => {
+    //取出Token
+    const token = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("HENRY-AUTH="))
+      ?.split("=")[1];
+
+    const tokenId = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("HENRY-AUTH-ID="))
+      ?.split("=")[1];
+
+    if (!token || !tokenId) {
+      return router.push("/");
+    } else if (token) {
+      axios.defaults.headers.common["Authorization"] = token;
+
+      mutate();
+    }
+  }, []);
+
   const data = resData?.data;
 
   const columns: ColumnDef<Payment>[] = [

@@ -33,7 +33,6 @@ export const LoginStateProvider = (props: { children: React.ReactNode }) => {
       setLoginState(false);
       return router.push("/");
     } else if (token) {
-      axios.defaults.headers.common["Authorization"] = token;
       setLoginState(true);
       return router.push("/list");
     }
