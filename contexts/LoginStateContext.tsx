@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import axios from "axios";
 
 type LoginStateContextProps = {
   loginState: boolean | null;
@@ -31,7 +32,8 @@ export const LoginStateProvider = (props: { children: React.ReactNode }) => {
     if (!token || !tokenId) {
       setLoginState(false);
       return router.push("/");
-    } else {
+    } else if (token) {
+      axios.defaults.headers.common["Authorization"] = token;
       setLoginState(true);
       return router.push("/list");
     }
