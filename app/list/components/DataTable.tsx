@@ -29,7 +29,6 @@ import axios from "axios";
 import useSWR from "swr";
 
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 import { useLoginStateContext } from "@/hooks/useLoginStateContext";
 import DeleteAlertDialog from "./DeleteAlertDialog";
 import { BsFillClipboardCheckFill } from "react-icons/bs";
@@ -51,27 +50,6 @@ export default function DataTable() {
   const { setLoginState } = useLoginStateContext();
   const [editState, setEditState] = React.useState(false);
   const inputRef = React.useRef<HTMLInputElement>(null);
-
-  // useEffect(() => {
-  //   //取出Token
-  //   const token = document.cookie
-  //     .split("; ")
-  //     .find((row) => row.startsWith("HENRY-AUTH="))
-  //     ?.split("=")[1];
-
-  //   const tokenId = document.cookie
-  //     .split("; ")
-  //     .find((row) => row.startsWith("HENRY-AUTH-ID="))
-  //     ?.split("=")[1];
-
-  //   if (!token || !tokenId) {
-  //     return router.push("/");
-  //   } else if (token) {
-  //     axios.defaults.headers.common["Authorization"] = token;
-
-  //     mutate();
-  //   }
-  // }, []);
 
   const {
     data: resData,

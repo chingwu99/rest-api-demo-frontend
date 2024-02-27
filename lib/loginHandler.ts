@@ -11,6 +11,7 @@ export const loginHandler = async (data: LoginFormData) => {
     const { sessionToken } = res.data.authentication;
     const id = res.data._id;
 
+    axios.defaults.headers.common["Authorization"] = sessionToken;
     // 設定 cookie 的過期時間，這裡我們設定為一小時後過期
     const expirationDate = new Date();
     expirationDate.setTime(expirationDate.getTime() + 1 * 60 * 60 * 1000); // 1小時
