@@ -76,7 +76,7 @@ export default function DataTable() {
 
       mutate();
     }
-  }, []);
+  }, [mutate, router]);
 
   const data = resData?.data;
 

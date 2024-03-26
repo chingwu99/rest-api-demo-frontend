@@ -36,7 +36,7 @@ export const LoginStateProvider = (props: { children: React.ReactNode }) => {
       setLoginState(true);
       return router.push("/list");
     }
-  }, []);
+  }, [router]);
 
   const value = {
     loginState,
